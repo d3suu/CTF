@@ -1,0 +1,17 @@
+"File Recovery"
+Writeup by d3s
+https://ringzer0team.com/challenges/49
+
+So you got a broken .tar file, using xxd look what's inside, there's a private RSA key and encrypted flag.
+
+Using dd get out the private.pem and flag.enc files
+$ dd if=c96ac47d3b5c62b67219113fe6524122.tar of=private.pem ibs=1 skip=1024 count=886
+$ dd if=c96ac47d3b5c62b67219113fe6524122.tar of=flag.enc ibs=1 skip=2560 count=128
+
+Now, using openssl decrypt flag.enc
+$ openssl rsautl -decrypt -inkey private.pem -in flag.enc -out flag
+
+Poof, you got your flag
+
+Note to self:
+Learn how to use openssl.
